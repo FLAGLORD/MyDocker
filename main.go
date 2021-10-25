@@ -1,22 +1,17 @@
 package main
 
 import (
-	"log"
+	"MyDocker/cmd"
 	"os"
-	"os/exec"
-	"syscall"
+
+	log "github.com/sirupsen/logrus"
 )
 
-func main() {
-	cmd := exec.Command("sh")
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Cloneflags: syscall.CLONE_NEWUTS,
-	}
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+func init() {
+	log.SetFormatter(&log.JSONFormatter{})
+	log.SetOutput(os.Stdout)
+}
 
-	if err := cmd.Run(); err != nil {
-		log.Fatal(err)
-	}
+func main() {
+	cmd.Execute()
 }
